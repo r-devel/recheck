@@ -73,6 +73,7 @@ jobs:
         check: [ 'oldpkg', 'newpkg' ]
     env:
       _R_CHECK_FORCE_SUGGESTS_: false
+      _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_ELAPSED_TIMEOUT_: 3600
       GITHUB_ACTIONS: ''
       CI: ''
