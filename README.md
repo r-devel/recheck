@@ -18,12 +18,14 @@ on:
         - strong
         - most
 
-name: Run a recheck
+name: Reverse dependency check
 
 jobs:
-  recheck:
-    name: Reverse dependency check
+  revdep_check:
+    name: Reverse check ${{ inputs.which }} dependents
     uses: r-devel/recheck/.github/workflows/recheck.yml@v1
+    with:
+      which: ${{ inputs.which }}
 ```
 
 Then trigger it manually using the 'run workflow' button under the actions tab.
