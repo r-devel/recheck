@@ -109,7 +109,7 @@ jobs:
             ${{matrix.check}}/check-details.*
 
   results:
-    name: Compare results
+    name: Show results
     needs: checks
     runs-on: ubuntu-latest
     container: ghcr.io/r-hub/r-minimal/r-minimal:latest
@@ -117,7 +117,7 @@ jobs:
       - name: Download log files
         uses: actions/download-artifact@v4
 
-      - name: Compare results
+      - name: Show results
         shell: Rscript {0}
         run: |
           changes <- tools::check_packages_in_dir_changes("newpkg-checklogs", "oldpkg-checklogs")
@@ -125,7 +125,8 @@ jobs:
             cat("Changes:\n")
             print(changes)
           } else {
-            cat("No changes, all good\n")
+            cat("No changes between old and new version\n")
           }
+          cat("\n------- Check results summary ------\n")
           tools::summarize_check_packages_in_dir_results("newpkg-checklogs")
 
