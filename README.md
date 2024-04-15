@@ -34,7 +34,7 @@ A reverse dependency check is not a red/green CI test. You should see it more as
 
 Checks from other packages that depend on yours are influenced by all sorts of factors specific to the platform, hardware, network, system setup, or just random failures. We try to create a setup similar to CRAN, but we need to make trade offs to keep this practical.
 
-The goal of to provide a simple tool that can run on free infrastructure to quickly check for potential problems with reverse dependencies of your package. It is still up to you to interpret the results, and possibly compare and investigate them to identify regressions.
+The goal is to provide a simple tool that can run on free infrastructure to check for potential problems with reverse dependencies of your package. It is still up to you to interpret the results, and possibly compare and investigate them to identify regressions.
 
 ## Important caveats
 
@@ -48,5 +48,4 @@ CRAN runs revdep checks on `r-devel` on a server with `debian:testing` but there
 ## On rcheckserver
 
 On GitHub actions we run the check inside the [rcheckserver](https://github.com/r-devel/rcheckserver)
-container. This container has exactly the same system libraries installed as the
-CRAN Debian server. Therefore we do not need to worry about system requirements: 
+container. This container has the same system libraries installed as the CRAN Debian server.
