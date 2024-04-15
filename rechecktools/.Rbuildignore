@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^Dockerfile$
+^\.git$
+^\.github$
+^LICENSE.md$
+^action.yml$
+^entrypoint.sh$
+^.*_recheck$

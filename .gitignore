@@ -1,0 +1,7 @@
+*.o
+*.so
+*.dll
+.Rproj.user
+.Rhistory
+revdeps
+*_recheck

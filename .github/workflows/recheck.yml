@@ -16,7 +16,7 @@ jobs:
   prepare:
     name: Prepare dependencies
     runs-on: ubuntu-latest
-    container: ghcr.io/r-universe-org/recheck
+    container: ghcr.io/r-devel/recheck
     outputs:
       oldfile: ${{ steps.filenames.outputs.oldfile }}
       newfile: ${{ steps.filenames.outputs.newfile }}
@@ -66,7 +66,7 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     name: Recheck ${{matrix.check == 'oldpkg' && needs.prepare.outputs.oldfile || needs.prepare.outputs.newfile}} (${{matrix.check}})
-    container: ghcr.io/r-universe-org/recheck
+    container: ghcr.io/r-devel/recheck
     timeout-minutes: 600
     strategy:
       matrix:
