@@ -67,11 +67,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Recheck ${{matrix.check == 'oldpkg' && needs.prepare.outputs.oldfile || needs.prepare.outputs.newfile}} (${{matrix.check}})
     container: ghcr.io/r-universe-org/recheck
+    timeout-minutes: 600
     strategy:
       matrix:
         check: [ 'oldpkg', 'newpkg' ]
     env:
       _R_CHECK_FORCE_SUGGESTS_: false
+      _R_CHECK_ELAPSED_TIMEOUT_: 3600
       GITHUB_ACTIONS: ''
       CI: ''
     steps:
