@@ -11,6 +11,11 @@ on:
 
 env:
   R_LIBS_USER: ${{github.workspace}}/pkglib
+  _R_CHECK_FORCE_SUGGESTS_: 'false'
+  _R_CHECK_CRAN_INCOMING_: 'false'
+  _R_CHECK_ELAPSED_TIMEOUT_: 3600
+  GITHUB_ACTIONS: ''
+  CI: ''
 
 jobs:
   prepare:
@@ -71,12 +76,6 @@ jobs:
     strategy:
       matrix:
         check: [ 'oldpkg', 'newpkg' ]
-    env:
-      _R_CHECK_FORCE_SUGGESTS_: false
-      _R_CHECK_CRAN_INCOMING_: false
-      _R_CHECK_ELAPSED_TIMEOUT_: 3600
-      GITHUB_ACTIONS: ''
-      CI: ''
     steps:
 
       - name: Download package and library
