@@ -30,7 +30,7 @@ jobs:
         run: git clone --depth=1 https://github.com/${{github.repository}} source
 
       - name: download dependencies
-        run: recheck::install_recheck_deps('source', '${{inputs.which}}')
+        run: rechecktools::install_recheck_deps('source', '${{inputs.which}}')
         shell: Rscript {0}
 
       - name: build source package
