@@ -10,14 +10,21 @@ This is set up as a [reusable workflow](https://docs.github.com/en/actions/using
 ```
 on:
   workflow_dispatch:
-# push:
+    inputs:
+      which:
+        type: choice
+        description: Which dependents to check
+        options:
+        - strong
+        - most
 
 name: Run a recheck
 
 jobs:
   recheck:
+    name: Reverse dependency check
     uses: r-devel/recheck/.github/workflows/recheck.yml@v1
 ```
 
-And then trigger it from the actions tab.
+And then trigger it manually using the 'run workflow' button under the actions tab.
 

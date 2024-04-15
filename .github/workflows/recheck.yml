@@ -2,6 +2,12 @@ name: Run a recheck
 
 on:
   workflow_call:
+    inputs:
+      which:
+        description: Should be 'strong' or 'most'.
+        type: string
+        default: strong
+        required: false
 
 env:
   R_LIBS_USER: ${{github.workspace}}/pkglib
@@ -79,7 +85,7 @@ jobs:
         run: |
           checkdir <- "${{matrix.check}}"
           options(repos = c(CRAN = 'https://cloud.r-project.org'))
-          reverse <- list(repos = 'https://cloud.r-project.org', which = "strong")
+          reverse <- list(repos = 'https://cloud.r-project.org', which = "${{ inputs.which }}")
           Sys.unsetenv(c("CI", "GITHUB_ACTIONS"))
           tools::check_packages_in_dir(checkdir, reverse = reverse, Ncpus = parallel::detectCores())
           details <- tools::check_packages_in_dir_details(checkdir)
