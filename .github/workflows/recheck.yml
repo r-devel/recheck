@@ -107,6 +107,7 @@ jobs:
             ${{matrix.check}}/*/*.out
             ${{matrix.check}}/*/*.Rout
             ${{matrix.check}}/*/*.fail
+            ${{matrix.check}}/Outputs
             ${{matrix.check}}/check-details.*
 
   results:
