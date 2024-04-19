@@ -129,13 +129,16 @@ jobs:
       - name: Show results
         shell: Rscript {0}
         run: |
+          cat("\n------- Check results summary ------\n")
+          tools::summarize_check_packages_in_dir_results("newpkg-checklogs")
+
+          # Check for regressions
           changes <- tools::check_packages_in_dir_changes("newpkg-checklogs", "oldpkg-checklogs")
           if(nrow(changes)){
             cat("Changes:\n")
             print(changes)
+            stop("Found potential regressions")
           } else {
             cat("No changes between old and new version\n")
           }
-          cat("\n------- Check results summary ------\n")
-          tools::summarize_check_packages_in_dir_results("newpkg-checklogs")
 
