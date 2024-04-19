@@ -126,18 +126,19 @@ jobs:
       - name: Download log files
         uses: actions/download-artifact@v4
 
-      - name: Show results
+      - name: Get results
         shell: Rscript {0}
         run: |
           cat("\n------- Check results summary ------\n")
           tools::summarize_check_packages_in_dir_results("newpkg-checklogs")
 
           # Check for regressions
+          cat("\n------- Check for regressions ------\n")
           changes <- tools::check_packages_in_dir_changes("newpkg-checklogs", "oldpkg-checklogs")
           if(nrow(changes)){
             cat("Changes:\n")
             print(changes)
-            stop("Found potential regressions")
+            stop("Found potential problems")
           } else {
             cat("No changes between old and new version\n")
           }
