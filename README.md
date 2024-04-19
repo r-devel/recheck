@@ -28,7 +28,9 @@ jobs:
       which: ${{ inputs.which }}
 ```
 
-Then trigger it manually using the 'run workflow' button under the actions tab.
+Then trigger it manually using the 'run workflow' button under the actions tab. Note that you can pick a branch to test, so you can perform reverse dependency checks on a feature branch before merging into main.
+
+A summary of the results can be seen in the GHA webUI. Upon completion, the full install/check logs for all packages are available in the 'artifacts' section.
 
 ## Recheck goals and limitations
 
