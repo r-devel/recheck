@@ -32,8 +32,13 @@ jobs:
           mkdir -p $R_LIBS_USER
           R -e ".libPaths()"
 
-      - name: clone
-        run: git clone --depth=1 https://github.com/${{github.repository}} source
+#      - name: clone
+#        run: git clone --depth=1 https://github.com/${{github.repository}} source
+
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          path: source
 
       - name: download dependencies
         run: rechecktools::install_recheck_deps('source', '${{inputs.which}}')
