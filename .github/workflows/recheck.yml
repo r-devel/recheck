@@ -8,6 +8,11 @@ on:
         type: string
         default: strong
         required: false
+      subdirectory:
+        description: Subdirectory of R package to be checked
+        required: false
+        type: string
+        default: ''
 
 env:
   R_LIBS_USER: ${{github.workspace}}/pkglib
@@ -37,16 +42,24 @@ jobs:
         with:
           path: source
 
+      - name: Set package source directory
+        run: |
+          if [ -n "${{ github.event.inputs.subdirectory }}" ]; then
+            echo "PKG_SOURCE_DIR=source/${{ github.event.inputs.subdirectory }}" >> $GITHUB_ENV
+          else
+            echo "PKG_SOURCE_DIR=source" >> $GITHUB_ENV
+          fi
+          
       - name: download dependencies
-        run: rechecktools::install_recheck_deps('source', '${{inputs.which}}')
+        run: rechecktools::install_recheck_deps('${{PKG_SOURCE_DIR}}', '${{inputs.which}}')
         shell: Rscript {0}
 
       - name: build source package
         run: |
           mkdir newpkg
-          R CMD build source
+          R CMD build ${{PKG_SOURCE_DIR}}
           mv *.tar.gz newpkg/
-          rm -Rf source
+          rm -Rf ${{PKG_SOURCE_DIR}}
 
       - name: Get old version of package
         shell: Rscript {0}
