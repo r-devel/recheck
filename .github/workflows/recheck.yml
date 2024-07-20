@@ -49,17 +49,17 @@ jobs:
           else
             echo "PKG_SOURCE_DIR=source" >> $GITHUB_ENV
           fi
-          
+
       - name: download dependencies
-        run: rechecktools::install_recheck_deps('${{PKG_SOURCE_DIR}}', '${{inputs.which}}')
+        run: rechecktools::install_recheck_deps('${{env.PKG_SOURCE_DIR}}', '${{inputs.which}}')
         shell: Rscript {0}
 
       - name: build source package
         run: |
           mkdir newpkg
-          R CMD build ${{PKG_SOURCE_DIR}}
+          R CMD build ${{env.PKG_SOURCE_DIR}}
           mv *.tar.gz newpkg/
-          rm -Rf ${{PKG_SOURCE_DIR}}
+          rm -Rf ${{env.PKG_SOURCE_DIR}}
 
       - name: Get old version of package
         shell: Rscript {0}
@@ -152,4 +152,3 @@ jobs:
           } else {
             cat("No changes between old and new version\n")
           }
-
