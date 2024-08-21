@@ -33,6 +33,14 @@ Then trigger it manually using the 'run workflow' button under the actions tab. 
 
 A summary of the results can be seen in the GHA webUI. Upon completion, the full install/check logs for all packages are available in the 'artifacts' section.
 
+## Real world example
+
+See here for an example using the V8 package: https://github.com/jeroen/V8/actions/workflows/recheck.yaml
+
+
+![example](https://github.com/user-attachments/assets/9f5f67fc-a0aa-444b-a5a6-e3afad12a354)
+
+
 ## Recheck goals and limitations
 
 A reverse dependency check can be a useful diagnostic tool to identify potential regressions that may need further investigation. However it is often impractical to use as a red/green CI test: checks from other packages that depend on yours can be influenced by all sorts of factors specific to the platform, hardware, network, system setup, or just random failures.
