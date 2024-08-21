@@ -44,8 +44,8 @@ jobs:
 
       - name: Set package source directory
         run: |
-          if [ -n "${{ github.event.inputs.subdirectory }}" ]; then
-            echo "PKG_SOURCE_DIR=source/${{ github.event.inputs.subdirectory }}" >> $GITHUB_ENV
+          if [ "${{ inputs.subdirectory }}" ]; then
+            echo "PKG_SOURCE_DIR=source/${{ inputs.subdirectory }}" >> $GITHUB_ENV
           else
             echo "PKG_SOURCE_DIR=source" >> $GITHUB_ENV
           fi
@@ -59,7 +59,7 @@ jobs:
           mkdir newpkg
           R CMD build ${{env.PKG_SOURCE_DIR}}
           mv *.tar.gz newpkg/
-          rm -Rf ${{env.PKG_SOURCE_DIR}}
+          rm -Rf source
 
       - name: Get old version of package
         shell: Rscript {0}
