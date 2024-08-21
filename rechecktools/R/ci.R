@@ -14,7 +14,7 @@ install_recheck_deps <- function(path = '.', which = 'strong'){
   cranrepo <- getOption('repos')['CRAN']
   cran <- utils::available.packages(repos = cranrepo)
   crandeps <- tools::package_dependencies(pkg, db = cran, which = which, reverse = TRUE)[[pkg]]
-  packages <- unique(c(desc_deps(desc), crandeps))
+  packages <- setdiff(unique(c(desc_deps(desc), crandeps)), basepkgs())
   if(grepl("Linux", Sys.info()[['sysname']])){
     preinstall_linux_binaries(packages)
   } else {
@@ -28,3 +28,9 @@ desc_deps <- function(desc){
   deps <- c(desc$Package, desc$Depends, desc$Imports, desc$LinkingTo, desc$Suggests, desc$Enhances)
   unique(trimws(sub("\\(.*\\)", "", unlist(strsplit(as.character(deps), ',')))))
 }
+
+# Do not try to install base packages
+basepkgs <- function(){
+  c("R", rownames(installed.packages(priority="base")))
+}
+
