@@ -15,8 +15,8 @@ on:
         type: choice
         description: Which dependents to check
         options:
-        - strong
-        - most
+          - strong
+          - most
 
 name: Reverse dependency check
 
@@ -26,6 +26,7 @@ jobs:
     uses: r-devel/recheck/.github/workflows/recheck.yml@v1
     with:
       which: ${{ inputs.which }}
+      subdirectory: '' #if your package is in a git subdir
 ```
 
 Then trigger it manually using the 'run workflow' button under the actions tab. Note that you can pick a branch to test, so you can perform reverse dependency checks on a feature branch before merging into main.
