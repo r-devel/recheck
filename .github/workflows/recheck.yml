@@ -50,7 +50,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
-          repository: ${{ inputs.repository || github.repository }}
+          repository: ${{ inputs.repository }}
           ref: ${{ inputs.ref }}
           path: source
 
