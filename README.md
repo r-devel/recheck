@@ -33,6 +33,8 @@ Then trigger it manually using the 'run workflow' button under the actions tab. 
 
 A summary of the results can be seen in the GHA webUI. Upon completion, the full install/check logs for all packages are available in the 'artifacts' section.
 
+See [Advanced Usage](#advanced-usage) for information on additional workflow arguments recheck supports.
+
 ## Real world example
 
 See here for an example using the V8 package: https://github.com/jeroen/V8/actions/workflows/recheck.yaml
@@ -59,3 +61,41 @@ CRAN runs revdep checks on `r-devel` on a server with `debian:testing` but there
 
 On GitHub actions we run the check inside the [rcheckserver](https://github.com/r-devel/rcheckserver)
 container. This container has the same system libraries installed as the CRAN Debian server.
+
+## Advanced Usage
+
+By default, recheck runs against the package in the current repository.
+For some use cases, it may be useful to run recheck against a repository other than the current one and/or against a branch other than the default.
+
+This can be achieved through a combination of the `repo` and `ref` parameters:
+
+- `repo`: Repository to checkout (as `owner/repo`)
+- `ref`: The branch, tag or SHA to checkout
+
+See the following example to get an idea of what this can look like:
+
+```yml
+on:
+  workflow_dispatch:
+    inputs:
+      which:
+        type: choice
+        description: Which dependents to check
+        options:
+          - strong
+          - most
+
+name: Reverse dependency check
+
+jobs:
+  revdep_check:
+    name: Reverse check ${{ inputs.which }} dependents
+    uses: r-devel/recheck/.github/workflows/recheck.yml@v1
+    with:
+      which: ${{ inputs.which }}
+      subdirectory: 'r'
+      repo: user/package_name
+      ref: my_branch
+```
+
+The above workflow runs recheck on the `my_branch` branch of a clone of https://github.com/user/package_name.
