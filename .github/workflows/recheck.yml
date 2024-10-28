@@ -13,6 +13,16 @@ on:
         required: false
         type: string
         default: ''
+      repository:
+        description: Repository to checkout (as owner/repo)
+        required: false
+        type: string
+        default: ''
+      ref:
+        description: The branch, tag or SHA to checkout
+        required: false
+        type: string
+        default: ''
 
 env:
   R_LIBS_USER: ${{github.workspace}}/pkglib
@@ -40,6 +50,8 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
           path: source
 
       - name: Set package source directory
