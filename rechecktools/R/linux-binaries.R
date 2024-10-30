@@ -7,7 +7,7 @@ preinstall_linux_binaries <- function(tocheck){
   rver <- getRversion()
   distro <- system2('lsb_release', '-sc', stdout = TRUE)
   options(HTTPUserAgent = sprintf("R/%s R (%s); r-universe (%s)", rver, paste(rver, R.version$platform, R.version$arch, R.version$os), distro))
-  bioc <- sprintf("https://bioc.r-universe.dev/bin/linux/%s/4/", distro)
+  bioc <- sprintf("https://bioc.r-universe.dev/bin/linux/%s/%s/", distro, substr(rver, 1, 3))
   cran <- sprintf("https://p3m.dev/cran/__linux__/%s/latest", distro)
   repos <- c(cran, bioc)
   db <- utils::available.packages(repos = c(CRAN = cran, BIOC = bioc, official_bioc_repos()))
