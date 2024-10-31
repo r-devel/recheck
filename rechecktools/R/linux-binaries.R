@@ -40,8 +40,8 @@ preinstall_linux_binaries <- function(tocheck){
 official_bioc_repos <- function(){
   version <- utils:::.BioC_version_associated_with_R_version()
   sprintf(c(
-    BioCsoft = "https://bioconductor.org/packages/%s/bioc",
-    BioCann = "https://bioconductor.org/packages/%s/data/annotation",
-    BioCexp = "https://bioconductor.org/packages/%s/data/experiment"
+    BioCsoft = "https://bioconductor.posit.co/packages/%s/bioc",
+    BioCann =  "https://bioconductor.posit.co/packages/%s/data/annotation",
+    BioCexp =  "https://bioconductor.posit.co/packages/%s/data/experiment"
   ), version)
 }
