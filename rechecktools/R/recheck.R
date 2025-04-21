@@ -9,12 +9,7 @@
 #' also check reverse suggests.
 #' @param preinstall_dependencies start by installing dependencies for all
 #' packages to be checked.
-recheck <- function(sourcepkg, which = "strong", preinstall_dependencies = TRUE){
-  # Some temporary settings
-  oldrepos <- enable_all_repos()
-  oldtimeout <- options(timeout = 600)
-  on.exit(options(c(oldrepos, oldtimeout)), add = TRUE)
-
+recheck <- function(sourcepkg, which = "strong", check_bioc = FALSE, preinstall_dependencies = TRUE){
   # Get the tarball
   if(grepl('^https:', sourcepkg)){
     curl::curl_download(sourcepkg, basename(sourcepkg))
@@ -26,18 +21,17 @@ recheck <- function(sourcepkg, which = "strong", preinstall_dependencies = TRUE)
   }
   pkg <- sub("_.*", "", basename(sourcepkg))
   checkdir <- dirname(sourcepkg)
-  cranrepo <- getOption('repos')['CRAN'] #
-  cran <- utils::available.packages(repos = cranrepo)
-  packages <- c(pkg, tools::package_dependencies(pkg, db = cran, which = which, reverse = TRUE)[[pkg]])
+  repos <- c(
+    CRAN = 'https://cloud.r-project.org',
+    BIOC = if(isTRUE(check_bioc)) 'https://bioconductor.posit.co/packages/devel/bioc'
+  )
+  db <- utils::available.packages(repos = repos)
+  packages <- c(pkg, tools::package_dependencies(pkg, db = db, which = which, reverse = TRUE)[[pkg]])
   if(preinstall_dependencies){
     group_output("Preparing dependencies", {
-      if(grepl("Linux", Sys.info()[['sysname']])){
-        preinstall_linux_binaries(packages)
-      } else {
-        utils::install.packages(packages, dependencies = TRUE)
-        deps <- unique(unlist(unname(tools::package_dependencies(packages, recursive = TRUE))))
-        update.packages(oldPkgs = deps, ask = FALSE)
-      }
+      utils::install.packages(packages, dependencies = TRUE)
+      deps <- unique(unlist(unname(tools::package_dependencies(packages, recursive = TRUE))))
+      update.packages(oldPkgs = deps, ask = FALSE)
     })
   }
   check_args <- character()
