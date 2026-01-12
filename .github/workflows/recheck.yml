@@ -41,14 +41,13 @@ jobs:
       image: ghcr.io/r-devel/recheck
       volumes:
         - /usr:/host/usr
-        - /opt:/host/opt
     outputs:
       oldfile: ${{ steps.filenames.outputs.oldfile }}
       newfile: ${{ steps.filenames.outputs.newfile }}
     steps:
       - name: prepare
         run: |
-          rm -Rf /host/usr/share/dotnet /host/opt/ghc /host/opt/hostedtoolscache /host/usr/local/share/boost
+          rm -Rf /host/usr/share/dotnet /host/usr/local/lib/android
           mkdir -p $R_LIBS_USER
           R -e ".libPaths()"
 
@@ -108,7 +107,6 @@ jobs:
       image: ghcr.io/r-devel/recheck
       volumes:
         - /usr:/host/usr
-        - /opt:/host/opt
     timeout-minutes: 600
     strategy:
       matrix:
@@ -116,7 +114,7 @@ jobs:
     steps:
 
       - name: Free disk space
-        run: rm -Rf /host/usr/share/dotnet /host/opt/ghc /host/opt/hostedtoolscache /host/usr/local/share/boost
+        run: rm -Rf /host/usr/share/dotnet /host/usr/local/lib/android
 
       - name: Download package and library
         uses: actions/cache/restore@v4
