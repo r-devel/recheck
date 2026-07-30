@@ -23,6 +23,11 @@ on:
         required: false
         type: string
         default: ''
+      pattern:
+        description: Optional regex to subset reverse dependencies by name, e.g. '^[a-k]' to split a very large recheck into multiple runs.
+        required: false
+        type: string
+        default: ''
 
 env:
   R_LIBS_USER: ${{github.workspace}}/pkglib
@@ -67,8 +72,11 @@ jobs:
           fi
 
       - name: download dependencies
-        run: rechecktools::install_recheck_deps('${{env.PKG_SOURCE_DIR}}', '${{inputs.which}}')
         shell: Rscript {0}
+        run: |
+          # save the (possibly subset) reverse dependencies (used twice)
+          revdeps <- rechecktools::install_recheck_deps('${{env.PKG_SOURCE_DIR}}', '${{inputs.which}}', pattern = '${{inputs.pattern}}')
+          writeLines(revdeps, 'revdeps.txt')
 
       - name: build source package
         run: |
@@ -97,6 +105,7 @@ jobs:
             pkglib
             newpkg
             oldpkg
+            revdeps.txt
           key: ${{ runner.os }}-${{ github.run_id }}-${{github.run_attempt}}
 
   checks:
@@ -123,6 +132,7 @@ jobs:
             pkglib
             newpkg
             oldpkg
+            revdeps.txt
           key: ${{ runner.os }}-${{ github.run_id }}-${{github.run_attempt}}
 
       - name: Run checks
@@ -130,7 +140,8 @@ jobs:
         run: |
           checkdir <- "${{matrix.check}}"
           options(repos = c(CRAN = 'https://cloud.r-project.org'))
-          reverse <- list(repos = 'https://cloud.r-project.org', which = "${{ inputs.which }}")
+          reverse <- readLines('revdeps.txt')
+          cat("Checking", length(reverse), "reverse dependencies\n")
           Sys.setenv(R_PROFILE="nothing") # do not set binary p3m mirror in child proc
           tools::check_packages_in_dir(checkdir, reverse = reverse, Ncpus = parallel::detectCores())
           details <- tools::check_packages_in_dir_details(checkdir)
