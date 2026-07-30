@@ -16,6 +16,10 @@ on:
         options:
           - strong
           - most
+      pattern:
+        type: string
+        description: Optional regex to subset the dependents by name
+        default: ''
 
 name: Reverse dependency check
 
@@ -25,6 +29,7 @@ jobs:
     uses: r-devel/recheck/.github/workflows/recheck.yml@v1
     with:
       which: ${{ inputs.which }}
+      pattern: ${{ inputs.pattern }} # optionally check a subset of dependents
       subdirectory: '' # set if your R package is in a subdir of the git repo
       repository: '' # set to recheck an R package from another git repo
       ref: '' # set to recheck a custom tag/branch from another repo
@@ -35,6 +40,8 @@ After committing this file, you can trigger it using the 'run workflow' button u
 A summary of the results can be seen in the GHA webUI. Upon completion, the full install/check logs for all packages are available in the 'artifacts' section.
 
 The `repository` and `ref` parameters are only needed if you want to recheck a package from another git repository than the one that has the workflow.
+
+For packages with very many reverse dependencies, the `pattern` parameter can be used to split the recheck into multiple smaller runs. It is a case-insensitive regular expression that subsets the reverse dependencies by name, for example `^[a-k]` to check them in batches.
 
 ## Real world example
 

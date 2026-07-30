@@ -4,12 +4,24 @@
 \alias{install_recheck_deps}
 \title{Wrappers to run in CI}
 \usage{
-install_recheck_deps(path = ".", which = "strong")
+install_recheck_deps(path = ".", which = "strong", check_bioc = FALSE,
+  pattern = "")
 }
 \arguments{
 \item{path}{path to source package}
 
 \item{which}{either be strong or most}
+
+\item{check_bioc}{also include reverse dependencies from Bioconductor}
+
+\item{pattern}{optional regular expression (case insensitive) to subset the
+reverse dependencies by name, e.g. \code{'^[a-k]'}. This can be used to split a
+very large reverse dependency check into multiple smaller runs.}
+}
+\value{
+the names of the (subset of) reverse dependencies for which the
+dependencies were installed, invisibly. This can be passed as the \code{reverse}
+argument of \code{\link[tools:check_packages_in_dir]{tools::check_packages_in_dir}} to check exactly these packages.
 }
 \description{
 To call in CI
