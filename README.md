@@ -52,11 +52,11 @@ The goal of this repo is to provide a simple tool that can run on free infrastru
 
 ## Important caveats
 
-To be able check reverse dependencies, we first need to install all dependencies (including Suggests) for each of those packages. Many CRAN packages indirectly depend on 100+ other packages, so this quickly adds up. 
+To be able check reverse dependencies, we first need to install all dependencies (including Suggests) for each of those packages. Many CRAN packages indirectly depend on 100+ other packages, so this quickly adds up.
 
 Hence even if your package only has a handful of dependents, you may need to install over a thousand other packages, before even starting the revdep check. For this reason it is only practical to do this on a platforms for which precompiled R binary packages are available.
 
-CRAN runs revdep checks on `r-devel` on a server with `debian:testing` but there are currently no R binary packages available for this platform. Instead our containers are based on `ubuntu:latest` and run `r-release`, for which public binary packages are available via https://p3m.dev and https://r-universe.dev. This is one reason results might be slighlty different from what CRAN would show, though in practice it is usually irrelevant.
+CRAN runs revdep checks on `r-devel` on a server with `debian:testing` but there are currently no R binary packages available for this platform. Instead our containers are based on `ubuntu:latest` and run `r-release`, for which public binary packages are available via https://p3m.dev and https://r-universe.dev. This is one reason results might be slightly different from what CRAN would show, though in practice it is usually irrelevant.
 
 It is also not the goal of this repo to support every possible flag in `CMD check`
 
